@@ -1,0 +1,49 @@
+
+<html>
+<head>
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function(){
+
+    var socket = io.connect();
+
+    socket.on('connect', function() {
+      socket.emit('connected', "basic_light");
+    });
+
+    socket.on('{{outlet.num}}'+'t_on', function(msg) {
+      $('#timeon').val(msg);
+    });
+         
+    $('#timeon').change(function() {
+      socket.emit('t_on', $('#timeon').val(),{{outlet.num}});
+    });
+
+    socket.on('{{outlet.num}}'+'t_off', function(msg) {
+      $('#timeoff').val(msg);
+    });
+         
+    $('#timeoff').change(function() {
+      socket.emit('t_off', $('#timeoff').val(),{{outlet.num}});
+    });
+  });
+</script>
+</head>
+
+<body>
+<div class="row">
+  <div class="col-6 pl-0" align="right"> 
+      <h5>On:        
+      <input class="btn bbtn btn-outline-light" style="border-color:black;" 
+                    id="timeon" type="time" value="{{outlet.timeon}}">
+      </h5>
+  </div>
+  <div class="col-6 pr-0 pl-0" align="left"> 
+      <h5>Off:         
+      <input class="btn bbtn btn-outline-light" style="border-color:black;" 
+                    id="timeoff" type="time" value="{{outlet.timeoff}}">
+      </h5>
+  </div>
+</div>
+
+</body>
+</html>

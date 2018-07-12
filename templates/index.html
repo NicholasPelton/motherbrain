@@ -1,0 +1,171 @@
+{% extends "header.html" %}
+{% block content %}
+
+<html>
+<head>
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function(){
+    var socket = io.connect();
+    socket.on('connect', function() {
+      socket.emit('connected', "index");
+    });
+//Buttons to toggle outlet    
+    $('#switch1').bind('click', function() {
+      socket.emit('toggle',1);
+      return false;
+    });
+    socket.on('1switch', function(msg) {
+      $('#title1').text(msg)
+    });
+    $('#switch2').bind('click', function() {
+      socket.emit('toggle',2);
+      return false;
+    });
+    socket.on('2switch', function(msg) {
+      $('#title2').text(msg)
+    });
+    $('#switch3').bind('click', function() {
+      socket.emit('toggle',3);
+      return false;
+    });
+    socket.on('3switch', function(msg) {
+      $('#title3').text(msg)
+    });
+    $('#switch4').bind('click', function() {
+      socket.emit('toggle',4);
+      return false;
+    });
+    socket.on('4switch', function(msg) {
+      $('#title4').text(msg)
+    });
+    $('#switch5').bind('click', function() {
+      socket.emit('toggle',5);
+      return false;
+    });
+    socket.on('5switch', function(msg) {
+      $('#title5').text(msg)
+    });
+//Update Outlet Name
+    socket.on('1outlet_name', function(msg) {
+      $('#name1').text(msg)
+    });
+    socket.on('2outlet_name', function(msg) {
+      $('#name2').text(msg)
+    });         
+    socket.on('3outlet_name', function(msg) {
+      $('#name3').text(msg)
+    });
+    socket.on('4outlet_name', function(msg) {
+      $('#name4').text(msg)
+    });
+    socket.on('5outlet_name', function(msg) {
+      $('#name5').text(msg)
+    });
+//Take on incoming temperature and humidity
+    socket.on('temp', function(msg) {
+      $('#temp').text(msg)
+    });
+    socket.on('hum', function(msg) {
+      $('#hum').text(msg)
+    });
+  });
+</script>
+
+</head>
+
+<body>
+<div class="row">
+  <div class="col-1"></div>
+  <div class="col-5">    
+    <center><a href="/garden"><div class = "card text-white mb-4" style="background: url('/static/pics/garden.jpg'); background-position: center;height:115px; background-size:100%; background-size:cover; max-width:54rem;">
+      <div class = "card-body text-center pt-2 pl-0 pr-0">
+        <h1><span id="temp">{{temp}}</span>&deg;F<br>
+        <span id="hum">{{hum}}</span>%</h1>        
+      </div>
+    </div></a></center>  
+  </div>
+  <div class="col-5">
+    <a href="/sun"><div class="card text-white bg-{{led.color}} mb-4" 
+                        style="max-width:54rem;height:115px;">
+      <div class ="card-body text-center pt-2 pl-0 pr-0">
+	  <h4 id="name5">
+            {{led.name}}
+          </h4>
+            <button class="btn btn-outline-light btn-sm" type="submit" role="button" id="switch5" value="5">
+              <i class="material-icons" style="font-size:36px;" id="title5">
+                {{led.phrase()}}
+              </i>
+            </button>  
+      </div>
+    </div></a>
+  </div>
+  <div class="col-1"></div>
+</div>
+<div class="row">
+  <div class="col-1"></div>
+  <div class="col-5"> 
+    <a href="/plug1">
+    <div class="card text-white bg-{{outlet1.color}} mb-4" 
+                          style="max-width:54rem;height:115px;">
+      <div class ="card-body text-center pt-2 pl-0 pr-0">
+	  <h4 id="name1">{{outlet1.name}}</h4>
+            <button class="btn btn-outline-light btn-sm" type="submit" role="button" id="switch1">
+              <i class="material-icons" style="font-size:36px;" id="title1">
+                {{outlet1.phrase()}}
+              </i>
+            </button>  
+      </div>
+    </div>  
+    </a>
+  </div>
+  <div class="col-5"> 
+    
+    <a href="/plug2"><div class="card text-white bg-{{outlet2.color}} mb-4" style="max-width:54rem;height:115px;">
+      <div class ="card-body text-center pt-2 pl-0 pr-0">     
+	  <h4 id="name2">{{outlet2.name}}</h4>
+            <button class="btn btn-outline-light btn-sm" type="submit" role="button" id="switch2" value="2">
+              <i class="material-icons" style="font-size:36px;" id="title2">
+                {{outlet2.phrase()}}
+              </i>
+            </button>      
+      </div>
+    </div></a> 
+  
+  </div>
+  <div class="col-1"></div>
+</div>
+<div class="row">
+  <div class="col-1"></div>
+  <div class="col-5"> 
+    
+    <a href="/plug3"><div class="card text-white bg-{{outlet3.color}} mb-4" style="max-width:54rem;height:115px;">
+      <div class ="card-body text-center pt-2 pl-0 pr-0">
+	  <h4 id="name3">{{outlet3.name}}</h4>
+            <button class="btn btn-outline-light btn-sm" type="submit" role="button" id="switch3" value="3">
+              <i class="material-icons" style="font-size:36px;" id="title3">
+                {{outlet3.phrase()}}
+              </i>
+            </button>  
+      </div>
+    </div></a> 
+  
+  </div>
+  <div class="col-5"> 
+    
+    <a href="/plug4"><div class="card text-white bg-{{outlet4.color}} mb-4" style="max-width:54rem;height:115px;">
+      <div class ="card-body text-center pt-2 pl-0 pr-0">
+	  <h4 id="name4">{{outlet4.name}}</h4>
+            <button class="btn btn-outline-light btn-sm" type="submit" role="button" id="switch4" value="4">
+              <i class="material-icons" style="font-size:36px;"  id="title4">
+                {{outlet4.phrase()}}
+              </i>            
+            </button>  
+      </div>
+    </div></a>  
+  
+  </div>
+  <div class="col-1"></div>
+</div>
+</body>
+</html>
+{% endblock %}

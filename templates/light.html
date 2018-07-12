@@ -1,0 +1,33 @@
+{% extends "header.html" %}
+{% block content %}
+
+<head>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type=text/javascript>
+$(function() {
+  $('#switch').bind('click', function() {
+    $.getJSON('/_switch_board', {
+      switch: $('#switch').val(),
+    }, function(data) {
+      $("#title").text(data.result);
+    });
+    return false;
+  });
+});
+  </script>
+</head>
+
+<div class="card">
+  <div class ="card-heading text-white bg-{{outlet.color}}">
+    <center><br>
+        <h1>LED</h1>
+        <h4 id=title>is OFF</h4>
+        <button class="btn btn-outline-{{outlet.color}} bg-white btn-lg" type="submit" id="switch" value="5" role="button">SWITCH</button> 
+    </center>      
+  </div>
+  <div class="card-body border-{{outlet.color}}">
+    This is where all the cool stuff will go
+  </div>
+</div>
+
+{% endblock %}

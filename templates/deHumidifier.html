@@ -1,0 +1,89 @@
+<html>
+<head>
+<script type=text/javascript>
+$(function() {
+  $('#high_m').change(function() {
+    $.getJSON('/climateupdate', {
+      h_high: $('#high_m').val(),
+    }, function(data) {     
+    });
+    return false;
+  });
+});
+
+$(function() {
+  $('#high').change(function() {
+    $.getJSON('/climateupdate', {
+      h_high: $('#high').val(),
+    }, function(data) {     
+    });
+    return false;
+  });
+});
+
+$(function() {
+  $('#low_m').change(function() {
+    $.getJSON('/climateupdate', {
+      h_low: $('#low_m').val(),
+    }, function(data) {     
+    });
+    return false;
+  });
+});
+
+$(function() {
+  $('#low').change(function() {
+    $.getJSON('/climateupdate', {
+      h_low: $('#low').val(),
+    }, function(data) {     
+    });
+    return false;
+  });
+});
+
+</script>
+</head>
+
+<body>
+Set the acceptable humidity range. If the humidity gets too high, the outlet will kick
+in until the humidity becomes too low.
+<br><br>
+<div class="row">
+  <div class="col-12">       
+    <div class="pckiller">    
+      <h5>
+      <div class="row">
+        <div class="col-12" align="center">
+          Low:
+        
+          <input value={{outlet.h_low}}
+                        id="low_m" style="border-color:black;" 
+                        type="number" pattern="[0-9]*" min="10" max="99">
+          % &nbsp;                
+          High:       
+          <input value={{outlet.h_high}}
+                        id="high_m" style="border-color:black;" 
+                        type="number" pattern="[0-9]*" min="10" max="99">
+          %
+        </div>
+      </div>
+      </h5>
+    </div>
+    <div class="mobilekiller">  
+      <h5 align="center">
+        Low:<input class="btn bbtn btn-outline-light" value={{outlet.h_low}} 
+                      id="low" style="border-color:black;"
+                      type="number" pattern="[0-9]*" min="10" max="99">% &nbsp; - &nbsp; 
+        High:<input class="btn bbtn btn-outline-light" value={{outlet.h_high}} 
+                      id="high" style="border-color:black;" 
+                      type="number" pattern="[0-9]*" min="10" max="99">%
+      </h5>
+    </div>
+  </div>
+</div>
+<br><small>
+Any device that decreases the humidity in the garden. This is especially important in very 
+wet climates or towards the end of the grow. The intricate buds need a lower humidity to prevent mold growth.
+</small>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %} MOTHERBRAIN {% endblock %}
+
+{% block styles %}
+{{super()}}
+  <link rel="stylesheet" href="{{url_for('.static', filename='mystyle.css')}}">
+{% endblock %}
+
+  {%block content%}
+    {% block head %} MOTHERBRAIN{% endblock %}
+  {%endblock%}
+</div>

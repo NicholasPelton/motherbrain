@@ -1,0 +1,35 @@
+
+<html>
+<head>
+<script type=text/javascript>
+
+$( document ).ready(function() {
+  $("#climatebody").load("{{outlet.c_style}}");
+});
+
+
+$(function() {
+  $('#c_style').change(function() {
+    $.getJSON('climateupdate', {
+      c_style: $('#c_style').val(),
+    }, function(data) {
+    });
+    $("#climatebody").load($('#c_style').val());
+    return false;
+  });
+});
+
+</script>
+</head>
+<body>
+    <h5 align="center">
+        <select class = "btn-light" id="c_style">
+          <option {% if outlet.c_style == "/ac" %} selected {% endif %} value="/ac">A/C</option>
+          <option {% if outlet.c_style == "/heater" %} selected {% endif %} value="/heater">Heater</option>
+          <option {% if outlet.c_style == "/humidifier" %} selected {% endif %} value="/humidifier">Humidifier</option>
+          <option {% if outlet.c_style == "/deHumidifier" %} selected {% endif %} value="/deHumidifier">De-Humidifier</option>           
+        </select>
+    </h5>
+    <div id="climatebody"></div>
+</body>
+</html>

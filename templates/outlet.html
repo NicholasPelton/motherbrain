@@ -1,0 +1,81 @@
+{% extends "header.html" %}
+{% block content %}
+
+<head>
+
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function(){
+    var socket = io.connect();
+    socket.on('connect', function() {
+      socket.emit('outlet_template', "{{outlet.url}}", {{outlet.num}});
+    });
+    
+    $('#switch').bind('click', function() {
+      socket.emit('toggle',{{outlet.num}});
+      return false;
+    });
+    socket.on('{{outlet.num}}switch', function(msg) {
+      $('#togglecon').text(msg)
+    });
+
+    $('.dropper').bind('click', function() {
+      var style = $(this).val();
+      socket.emit('outlet_template', style, {{outlet.num}});
+      $("#template").dropdown('toggle');
+      return false;
+    });
+
+    socket.on('{{outlet.num}}outlet_template', function(msg) {
+      $('#body').empty();
+      $('#body').load(msg);
+    });
+
+    socket.on('{{outlet.num}}outlet_name', function(msg) {
+      $("#name").text(msg);
+    });
+
+    socket.on('{{outlet.num}}outlet_button', function(msg) {
+      $("#template").text(msg);
+    });
+
+  });
+</script>
+</head>
+
+<div class="card">
+  <div class ="card-body text-white bg-{{outlet.color}} pt-2" style="height:115px;">
+    <center>
+        <h4 id="name">{{outlet.name}}</h4>
+          <button class="btn btn-outline-light btn-sm" type="submit" id="switch" value="{{outlet.num}}" role="button">
+            <i class="material-icons" style="font-size:36px" id="togglecon">
+              {{outlet.phrase()}}
+            </i>
+          </button>
+          
+        <div class="btn-group dropdown">
+          <button class="btn btn-outline-light dropdown-toggle" id="template" type = "button" data-toggle="dropdown" aria-haspopup="true" aira-expanded="false">          
+          {{outlet.type}}
+          </button>
+          <div class="dropdown-menu" aria-labelledby="template">
+            <button class="dropdown-item dropper" value="/basic" type="button">Basic On/Off</button>
+            <button class="dropdown-item dropper" value="/seasonal" type="button">Seasonal Light</button>
+            <button class="dropdown-item dropper" value="/climate" type="button">Climate Control</button>
+            <button class="dropdown-item dropper" value="/feeding" type="button">Watering Schedule</button>
+            <button class="dropdown-item dropper" value="/none" type="button">No Setting</button>            
+          </div>
+        </div>       
+    </center>      
+  </div>
+  <div class="card-body border-{{outlet.color}}">
+    <div class="row">
+    <div class="col-lg-2 col-md-0 col-sm-0"></div>
+    <div class="col-lg-8 col-md-12 col-sm-12">
+      <div id="body"></div>
+    </div>
+    <div class="col-lg-2 col-md-0 col-sm-0"></div>
+  </div>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,135 @@
+<html>
+<title> MOTHERBRAIN </title>
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.6/socket.io.min.js"></script>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+
+
+
+
+<link href="https://fonts.googleapis.com/css?family=Righteous|Monoton" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
+
+<style>
+h1 {
+  font-family: 'Righteous';
+}
+
+h3 {
+  font-family: 'Monoton';
+  color: #343a40;
+}
+
+h4 {
+  font-family: 'Monoton';
+
+}
+
+h5 {
+  font-family: 'Righteous';
+}
+
+h6 {
+  font-family: 'Righteous';
+}
+
+.bbtn{
+  color:black;
+  border-color:white;
+  background-color:white;
+}
+
+.btn:hover{
+  border-color:white;
+}
+
+@media only screen and (min-width: 721px) {
+  .pckiller {
+      display:none;
+  }
+}
+
+@media only screen and (max-width: 720px) {
+  .mobilekiller {
+      display:none;
+  }
+}
+@media only screen and (max-width: 720px) {
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width:40px;
+    height:30px;
+  }
+}
+</style>
+
+
+<script type=text/javascript>
+$(function() {
+  $('#submit').bind('click', function() {
+    $('#website').text("waiting on network..."),
+    $("#wfmenu").dropdown('toggle'),
+    $.getJSON('/wireless', {
+      name: $('#wirelessname').val(),
+      password: $('#wirelesspassword').val(),
+    }, function(data) {
+      $('#icon').text(data.result);
+      $('#website').text("waiting on url...");
+      $.getJSON('/website', {
+      }, function(data) {
+        $("#website").text(data.result);
+      });  
+    });
+    return false;
+  });
+});
+
+</script>
+</head>
+<body>
+<div class="row">
+  <div class="col-lg-3 col-md-0"></div>
+  <div class="col-lg-6 col-md-12" align="center">
+    <a href="/" style="color:black"><h3>M O T H E R B R A I N</h3></a>
+  </div>
+  <div class="col-lg-3 col-md-0" align='right'>
+    
+  
+    <div class="btn-group dropleft mobilekiller">
+      <h6 id="website">{{webadr}}</h6>
+      <button class="bg-white" id="wfmenu" style="padding:0px 0px;" type = "button" data-toggle="dropdown" aria-haspopup="true" aira-expanded="false">          
+        <i class="material-icons" id="icon">{{wificon}}</i>
+      </button>
+      
+      <div class="dropdown-menu" aria-labelledby="wfmenu" style="width:150px;">
+        <h5><div class="form-group">
+          <label for="wirelessname">Name</label>
+          <center><input type="text" class ="form-control" style="font-size:14px; width:130px;" id="wirelessname"></center>
+        </div>          
+        <div class="form-group">
+          <label for="wirelesspassword">Password</label>
+          <center><input type="password" class ="form-control" style="font-size:14px; width:130px;" id="wirelesspassword"></center>
+        </div></h5>
+        <center>
+          <button type="submit" class="btn btn-outline-secondary btn-sm" id="submit"><h6>Submit</h6></button>
+        </center>
+      </div>
+    </div>
+  
+  </div>  
+</div>
+</body>
+</html>
+
+{%block content%}
+{%endblock%}
+

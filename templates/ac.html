@@ -1,0 +1,239 @@
+<html>
+<head>
+<script type=text/javascript>
+$(function() {
+  $('#day_high_m').change(function() {
+    $.getJSON('/climateupdate', {
+      d_t_high: $('#day_high_m').val(),
+    }, function(data) {     
+    });
+    return false;
+  });
+});
+
+$(function() {
+  $('#day_high').change(function() {
+    $.getJSON('/climateupdate', {
+      d_t_high: $('#day_high').val(),
+    }, function(data) {     
+    });
+    return false;
+  });
+});
+
+$(function() {
+  $('#night_high_m').change(function() {
+    $.getJSON('/climateupdate', {
+      n_t_high: $('#night_high_m').val(),
+    }, function(data) {     
+    });
+    return false;
+  });
+});
+
+$(function() {
+  $('#night_high').change(function() {
+    $.getJSON('/climateupdate', {
+      n_t_high: $('#night_high').val(),
+    }, function(data) {     
+    });
+    return false;
+  });
+});
+$(function() {
+  $('#day_low_m').change(function() {
+    $.getJSON('/climateupdate', {
+      d_t_low: $('#day_low_m').val(),
+    }, function(data) {     
+    });
+    return false;
+  });
+});
+
+$(function() {
+  $('#day_low').change(function() {
+    $.getJSON('/climateupdate', {
+      d_t_low: $('#day_low').val(),
+    }, function(data) {     
+    });
+    return false;
+  });
+});
+
+$(function() {
+  $('#night_low_m').change(function() {
+    $.getJSON('/climateupdate', {
+      n_t_low: $('#night_low_m').val(),
+    }, function(data) {     
+    });
+    return false;
+  });
+});
+
+$(function() {
+  $('#night_low').change(function() {
+    $.getJSON('/climateupdate', {
+      n_t_low: $('#night_low').val(),
+    }, function(data) {     
+    });
+    return false;
+  });
+});
+
+
+$('#daytime').click(function() {
+  if (this.checked){
+    $('#day_low').attr("disabled",false);
+    $('#day_high').attr("disabled",false);
+    $('#day_low_m').attr("disabled",false);
+    $('#day_high_m').attr("disabled",false);
+    $.getJSON('/climateupdate', {
+      day_t: "checked",
+    }, function(data) {     
+    });
+
+  } else {
+    $('#day_low').attr("disabled",true);
+    $('#day_high').attr("disabled",true);
+    $('#day_low_m').attr("disabled",true);
+    $('#day_high_m').attr("disabled",true);
+    $.getJSON('/climateupdate', {
+      day_t: "notchecked",
+    }, function(data) {     
+    });
+
+  }
+});
+
+$('#nighttime').click(function() {
+  if (this.checked){
+    $('#night_low').attr("disabled",false);
+    $('#night_high').attr("disabled",false);
+    $('#night_low_m').attr("disabled",false);
+    $('#night_high_m').attr("disabled",false);
+    $.getJSON('/climateupdate', {
+      night_t: "checked",
+    }, function(data) {     
+    });
+  } else {
+    $('#night_low').attr("disabled",true);
+    $('#night_high').attr("disabled",true);
+    $('#night_low_m').attr("disabled",true);
+    $('#night_high_m').attr("disabled",true);
+    $.getJSON('/climateupdate', {
+      night_t: "notchecked",
+    }, function(data) {     
+    });
+  }
+});
+
+</script>
+</head>
+
+<body>
+Set the acceptable temperature range. If the temperature gets too high, the outlet will kick
+in until the temperature becomes too low.
+<br><br>
+<div class="row">
+  <div class="col-6">       
+    <h5 align="center">
+      <input class="form-check-input" type="checkbox" id="daytime" {{outlet.day_t}}>Day Time:
+    </h5>
+    <div class="pckiller">    
+      <h5>
+      <div class="row">
+        <div class="col-5 pr-0 pl-0 pt-1" align="right">
+          High:
+        </div>
+        <div class="col-7 pr-0 pl-0" align="left">
+          <input value={{outlet.d_t_high}} {% if outlet.day_t == "notchecked" %}disabled{% endif %}
+                        id="day_high_m" style="border-color:black;" 
+                        type="number" pattern="[0-9]*" min="30" max="110">
+          &deg;F
+          <br>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-5 pr-0 pl-0 pt-1" align="right">
+          Low:
+        </div>
+        <div class="col-7 pl-0 pr-0" align="left">
+          <input value={{outlet.d_t_low}} {% if outlet.day_t == "notchecked" %}disabled{% endif %}
+                        id="day_low_m" style="border-color:black;" 
+                        type="number" pattern="[0-9]*" min="30" max="110">
+          &deg;F
+          <br>
+        </div>
+      </div>
+      </h5>
+    </div>
+    <div class="mobilekiller">  
+      <h5 align="center">
+        Low:<input class="btn bbtn btn-outline-light" value={{outlet.d_t_low}}
+                      {% if outlet.day_t == "notchecked" %}disabled{% endif %} 
+                      id="day_low" style="border-color:black;"
+                      type="number" pattern="[0-9]*" min="30" max="110">&deg;F &nbsp; - &nbsp; 
+        High:<input class="btn bbtn btn-outline-light" value={{outlet.d_t_high}}
+                      {% if outlet.day_t == "notchecked" %}disabled{% endif %} 
+                      id="day_high" style="border-color:black;" 
+                      type="number" pattern="[0-9]*" min="30" max="110">&deg;F
+      </h5>
+    </div>
+  </div>
+
+
+  <div class="col-6"> 
+    <h5 align="center">
+      <input class="form-check-input" type="checkbox" id="nighttime" {{outlet.night_t}}>Night Time:
+    </h5>
+    <div class="pckiller">    
+      <h5>
+      <div class="row">
+        <div class="col-4 pr-0 pl-0 pt-1" align="right">
+          High:
+        </div>
+        <div class="col-8 pr-0 pl-0" align="left">
+          <input value={{outlet.n_t_high}} {% if outlet.night_t == "notchecked" %}disabled{% endif %}
+                        id="night_high_m" style="border-color:black;" 
+                        type="number" pattern="[0-9]*" min="30" max="110">
+          &deg;F
+          <br>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4 pr-0 pl-0 pt-1" align="right">
+          Low:
+        </div>
+        <div class="col-8 pl-0 pr-0" align="left">
+          <input value={{outlet.n_t_low}} {% if outlet.night_t == "notchecked" %}disabled{% endif %}
+                        id="night_low_m" style="border-color:black;" 
+                        type="number" pattern="[0-9]*" min="30" max="110">
+          &deg;F
+          <br>
+        </div>
+      </div>
+      </h5>
+    </div>
+    <div class="mobilekiller">  
+      <h5 align="center">
+        Low:<input class="btn bbtn btn-outline-light" value={{outlet.n_t_low}}
+                      {% if outlet.night_t == "notchecked" %}disabled{% endif %} 
+                      id="night_low" style="border-color:black;" 
+                      type="number" pattern="[0-9]*" min="30" max="110">&deg;F &nbsp; - &nbsp;
+        High:<input class="btn bbtn btn-outline-light" value={{outlet.n_t_high}}
+                      {% if outlet.night_t == "notchecked" %}disabled{% endif %} 
+                      id="night_high" style="border-color:black;" 
+                      type="number" pattern="[0-9]*" min="30" max="110">&deg;F
+      </h5>
+    </div>
+  </div>
+</div>
+<br><small>
+Any device, fans included, that can cool the garden. This is especially important in very 
+hot environments or if a lot of supplimental lights are being used.
+Usually this is not needed in conjunction with a heating device unless there are massive 
+swings in temperature between the day time and night time. If needed, make sure to use the 
+day time and night time settings so that both machines aren't running at the same 
+time!</small>
+</body>
+</html>

@@ -1,0 +1,83 @@
+
+
+<html>
+<head>
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function(){
+    var socket = io.connect();
+    socket.on('connect', function() {
+      socket.emit('climate_u', "None", "None", {{outlet.num}});
+    });
+
+    $('#aday2').change(function() {
+      socket.emit('climate_u',$('#aday2').val(), "aday2", {{outlet.num}});
+    });
+
+    $('#aday').change(function() {
+      socket.emit('climate_u',$('#aday').val(), "aday", {{outlet.num}});
+    });
+
+    $('#daytime').click(function() {
+      if (this.checked){
+        var special = "checked";
+      }else{
+        var special = "notchecked";
+      }
+      socket.emit('climate_u', special, "day_t", {{outlet.num}});
+    });
+
+    socket.on('{{outlet.num}}'+'day_t', function(msg) {
+      if (msg=="checked"){
+        $('#daytime').prop("checked",true);
+      }else{
+        $('#daytime').prop("checked",false);
+      }
+    });
+
+    socket.on('{{outlet.num}}'+'aday', function(msg) {
+      $('#adaytalk').text(msg + " times a day");
+      $('#aday').val(msg);
+    });
+
+    socket.on('{{outlet.num}}'+'aday2', function(msg) {
+      $('#aday2talk').text("for " + msg + " minutes");
+      $('#aday2').val(msg);
+    });
+
+    socket.on('{{outlet.num}}'+'feedon', function(feedon) {   
+      var feed_on = feedon;
+      var list = document.createElement('p');
+      for (var i = 0; i < feed_on.length; i++) {  
+        var item = document.createElement('div');
+        item.appendChild(document.createTextNode(feed_on[i]));
+        list.appendChild(item);
+      }
+      $('#schedule').text("");
+      document.getElementById('schedule').appendChild(list);  
+    });
+         
+  });
+</script>
+
+</head>
+
+<body>
+<div class="row">
+  <div class="col-6" align="right"> 
+    <h5><div id="adaytalk">{{outlet.aday}} times a day</div></h5>
+    <input class="slider" id="aday" type="range" min="2" max="25" value="{{outlet.aday}}">
+    <h5><div id="aday2talk">for {{outlet.aday2}} minutes</div></h5>
+    <input class="slider" id="aday2" type="range" min="2" max="10" value="{{outlet.aday2}}">
+    <br><br>
+    <input class="form-check-input" type="checkbox" id="daytime"
+                  {%if led.name == "NONE"%}disabled{%else%}{{outlet.day_t}}{%endif%}>
+                  Only during the day
+    {% if led.name == "NONE" %}<p class="text-danger">Day and night have not been set yet!</p>{% endif %}
+  </div>
+  <div class="col-6" align="left">
+    <h5>Schedule:</h5>
+    <p id="schedule"></p>   
+  </div>
+</div>
+</body>
+</html>
